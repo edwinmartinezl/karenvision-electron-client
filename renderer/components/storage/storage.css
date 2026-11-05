@@ -1,0 +1,241 @@
+/* ── Storage Panel ──────────────────────────────────────────────── */
+
+.stor-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #0b1019;
+  color: #c8d4e3;
+  font-size: 13px;
+}
+
+.stor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.stor-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d8e4f0;
+}
+
+.stor-refresh-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #5a6b82;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+.stor-refresh-btn:hover { background: rgba(255,255,255,0.1); color: #9dafc5; }
+
+.stor-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.stor-body::-webkit-scrollbar { display: none; }
+
+.stor-loading, .stor-empty {
+  color: #3a4e64;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 13px;
+}
+
+/* ── NVR total card ─────────────────────────────────────────────── */
+
+.stor-nvr-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.stor-nvr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stor-nvr-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #d8e4f0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stor-nvr-nums {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.stor-used   { color: #d8e4f0; font-weight: 600; }
+.stor-sep    { color: #3a4e64; }
+.stor-total  { color: #4b6080; }
+
+.stor-nvr-free {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #4b6080;
+}
+.stor-nvr-free strong { color: #9dafc5; }
+
+/* ── Bar track & fill ───────────────────────────────────────────── */
+
+.stor-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stor-bar-sm { height: 5px; }
+
+.stor-bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.stor-bar-fill-ok   { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.stor-bar-fill-warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.stor-bar-fill-crit { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+/* ── Percentage badge ───────────────────────────────────────────── */
+
+.stor-pct-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-left: 6px;
+}
+.stor-pct-ok   { background: rgba(34,197,94,0.12);  color: #4ade80; }
+.stor-pct-warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
+.stor-pct-crit { background: rgba(239,68,68,0.12);  color: #f87171; }
+
+/* ── Section ────────────────────────────────────────────────────── */
+
+.stor-section { display: flex; flex-direction: column; gap: 8px; }
+
+.stor-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #3a4e64;
+}
+
+/* ── Channel grid ───────────────────────────────────────────────── */
+
+.stor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.stor-ch-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.stor-ch-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.stor-ch-num {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #d8e4f0;
+}
+
+.stor-ch-name {
+  font-size: 11px;
+  color: #4b6080;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
+}
+
+.stor-med-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.stor-med-local   { background: rgba(59,130,246,0.12); color: #60a5fa; }
+.stor-med-network { background: rgba(168,85,247,0.12); color: #c084fc; }
+.stor-med-cloud   { background: rgba(34,197,94,0.12);  color: #4ade80; }
+.stor-med-unknown { background: rgba(255,255,255,0.05); color: #3a4e64; }
+
+.stor-ch-nums {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 11.5px;
+}
+
+.stor-ch-used  { color: #c8d4e3; font-weight: 600; }
+.stor-ch-sep   { color: #3a4e64; }
+.stor-ch-total { color: #4b6080; }
+
+.stor-ch-free {
+  font-size: 10.5px;
+  color: #3a4e64;
+}
+
+.stor-no-quota {
+  font-size: 10.5px;
+  color: #3a4e64;
+  margin-left: 6px;
+  font-style: italic;
+}
+
+.stor-ch-path {
+  font-size: 10px;
+  color: #2d3e52;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "SF Mono","Fira Code","Courier New",monospace;
+  margin-top: 2px;
+}

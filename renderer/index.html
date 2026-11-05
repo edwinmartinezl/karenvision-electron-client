@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="
+default-src 'self';
+script-src 'self';
+style-src 'self';
+img-src 'self' data:;
+connect-src http://127.0.0.1:2030 http://localhost:2030 http://127.0.0.1:2130 http://127.0.0.1:2040 http://127.0.0.1:2050;
+media-src blob: 'self' http://127.0.0.1:2130 http://127.0.0.1:2030 http://127.0.0.1:*;
+font-src 'self';
+object-src 'none';
+base-uri 'self';
+form-action 'self';
+">
+<title>KarenVision View</title>
+<link rel="stylesheet" href="./styles/tokens.css">
+<link rel="stylesheet" href="./styles/base.css">
+<link rel="stylesheet" href="./styles/layout.css">
+<link rel="stylesheet" href="./components/connection-panel/connection-panel.css">
+<link rel="stylesheet" href="./components/login-panel/login-panel.css">
+<link rel="stylesheet" href="./components/toast-stack/toast-stack.css">
+<link rel="stylesheet" href="./components/view/view.css">
+<link rel="stylesheet" href="./components/view-group/view-group.css">
+<link rel="stylesheet" href="./components/locale/locale.css">
+<link rel="stylesheet" href="./components/playback/playback.css">
+<link rel="stylesheet" href="./components/calc/calc.css">
+<link rel="stylesheet" href="./components/record-schedule/record-schedule.css">
+<link rel="stylesheet" href="./components/semantic/semantic.css">
+<link rel="stylesheet" href="./components/session-panel/session-panel.css">
+<link rel="stylesheet" href="./components/commands/commands.css">
+<link rel="stylesheet" href="./components/usage/usage.css">
+<link rel="stylesheet" href="./components/camera-manager/camera-manager.css">
+<link rel="stylesheet" href="./components/alarms/alarms.css">
+<link rel="stylesheet" href="./components/storage/storage.css">
+<link rel="stylesheet" href="./components/dashboard/dashboard.css">
+</head>
+<body>
+  <div class="boot-overlay active" id="boot-overlay" data-component="boot-overlay">
+    <div class="boot-overlay-brand">KARENVISION</div>
+  </div>
+  <div class="title-drag-region" data-component="title-drag-region"></div>
+  <div class="window-controls" data-component="window-controls">
+    <div class="window-controls-dots">
+      <button class="control close" aria-label="Cerrar" id="btn-close"></button>
+      <button class="control max" aria-label="Maximizar" id="btn-max"></button>
+      <button class="control min" aria-label="Minimizar" id="btn-min"></button>
+    </div>
+  </div>
+  <div class="app-shell" data-component="app-shell">
+    <div class="chrome-bar" data-component="chrome-bar">
+      <div class="chrome-brand">KarenVision</div>
+      <div class="status-pill" id="global-status">View</div>
+    </div>
+
+    <div class="main-panel" data-component="main-panel">
+      <div class="screen-stage" data-component="screen-stage">
+      <section class="screen center-screen active" id="screen-url" data-component="screen-auth-url">
+        <div class="card auth-card" data-component="connection-panel">
+          <div class="auth-icon" aria-hidden="true"></div>
+          <h2>Conexion</h2>
+          <div class="row auth-row compact-field">
+            <div class="field url-field">
+              <label for="base-url-input">Base URL</label>
+              <div class="auth-input-wrap">
+                <input id="base-url-input" type="text" placeholder="http://127.0.0.1:2030" autocomplete="off">
+              </div>
+            </div>
+          </div>
+          <div class="auth-actions">
+            <button class="primary" id="btn-url-continue">Continuar</button>
+          </div>
+          <p class="auth-help-bottom">Configure la conexion de la app. Solo se guarda la URL base local (ejemplo: puerto 2030).</p>
+        </div>
+      </section>
+
+      <section class="screen center-screen" id="screen-login" data-component="screen-auth-login">
+        <div data-component="login-panel"></div>
+      </section>
+
+
+<section class="screen viewer" id="screen-viewer" data-component="viewer-shell">
+        <div class="viewer-top" data-component="viewer-header">
+          <div>
+            <div class="viewer-title" id="viewer-client-label">Cliente</div>
+            <div class="viewer-meta" id="viewer-meta">Sin sesion</div>
+          </div>
+          <div class="viewer-actions" data-component="viewer-actions">
+            <button id="btn-refresh-groups">Actualizar grupos</button>
+            <button class="secondary" id="btn-refresh-state">Actualizar estado</button>
+            <button id="btn-duplicate">Desacoplar</button>
+            <button class="warn" id="btn-logout">Cerrar sesion</button>
+          </div>
+        </div>
+
+        <div class="groups-strip" id="groups-strip" data-component="viewer-groups-strip"></div>
+
+        <div class="viewer-body" data-component="viewer-body">
+          <div class="contract-summary" id="contract-summary" data-component="viewer-contract-summary"></div>
+          <div class="grid-wrap" id="grid-wrap" data-component="viewer-dashboard-grid">
+            <div class="empty-state">Seleccione un grupo permitido para cargar el contrato.</div>
+          </div>
+        </div>
+      </section>
+      </div>
+      <div class="panel-copyright" aria-hidden="true">© 2026 KarenVision. Todos los derechos reservados.</div>
+    </div>
+  </div>
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="false"></div>
+
+<script src="./vendor/anime.min.js"></script>
+<script src="./vendor/mpegts.js"></script>
+<script type="module" src="./app/bootstrap.js"></script>
+</body>
+</html>

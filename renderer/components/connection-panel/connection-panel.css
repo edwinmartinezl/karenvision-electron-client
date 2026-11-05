@@ -1,0 +1,60 @@
+[data-component="connection-panel"] .field.url-field {
+  width: min(280px, 100%);
+  margin-inline: auto;
+}
+
+[data-component="connection-panel"] .field.url-field label {
+  text-align: center;
+}
+
+[data-component="connection-panel"] .auth-input-wrap::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.34);
+  opacity: 0.9;
+}
+
+[data-component="connection-panel"] .auth-input-wrap::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  width: 1px;
+  height: 16px;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.10);
+}
+
+[data-component="connection-panel"] input {
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(116,198,255,0.18);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(116,198,255,0.04), transparent 34%),
+    rgba(8, 14, 28, 0.54);
+  padding-left: 38px;
+  text-align: left;
+}
+
+[data-component="connection-panel"] input::placeholder {
+  color: rgba(255,255,255,0.42);
+}
+
+[data-component="connection-panel"] .auth-actions .primary {
+  width: auto;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(var(--brand-rgb), 0.92), rgba(110, 25, 168, 0.92));
+  border: 1px solid rgba(var(--brand-rgb), 0.24);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+

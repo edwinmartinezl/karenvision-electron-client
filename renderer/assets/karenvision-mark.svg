@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" fill="none">
+  <!-- Upper eyelid: light blue for dark backgrounds -->
+  <path d="M20 60 Q100 10 180 60" stroke="#74c6ff" stroke-width="8" stroke-linecap="round"/>
+  <!-- Lower eyelid: purple -->
+  <path d="M20 60 Q100 110 180 60" stroke="#7835a5" stroke-width="8" stroke-linecap="round"/>
+  <!-- Iris: cyan / purple / orange -->
+  <clipPath id="iris-k"><circle cx="100" cy="60" r="26"/></clipPath>
+  <g clip-path="url(#iris-k)">
+    <rect x="74" y="34" width="26" height="26" fill="#54bddf"/>
+    <rect x="100" y="34" width="26" height="26" fill="#7835a5"/>
+    <rect x="74" y="60" width="52" height="26" fill="#ec6d0b"/>
+  </g>
+  <circle cx="100" cy="60" r="26" fill="none" stroke="#74c6ff" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,279 @@
+/* ── Alarms Panel ───────────────────────────────────────────────── */
+
+.alm-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #0b1019;
+  color: #c8d4e3;
+  font-size: 13px;
+}
+
+.alm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.alm-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d8e4f0;
+}
+
+.alm-refresh-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #5a6b82;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+.alm-refresh-btn:hover { background: rgba(255,255,255,0.1); color: #9dafc5; }
+
+.alm-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.alm-body::-webkit-scrollbar { display: none; }
+
+.alm-loading {
+  color: #3a4e64;
+  font-size: 13px;
+  padding: 40px 0;
+  text-align: center;
+}
+
+/* ── Summary pills ──────────────────────────────────────────────── */
+
+.alm-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alm-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 30px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+.alm-pill-ok   { background: rgba(34,197,94,0.1);  border-color: rgba(34,197,94,0.2);  color: #4ade80; }
+.alm-pill-warn { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); color: #fbbf24; }
+.alm-pill-err  { background: rgba(239,68,68,0.1);  border-color: rgba(239,68,68,0.2);  color: #f87171; }
+.alm-pill-icon { font-size: 11px; }
+
+/* ── Section ────────────────────────────────────────────────────── */
+
+.alm-section { display: flex; flex-direction: column; gap: 8px; }
+
+.alm-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #3a4e64;
+  padding-bottom: 2px;
+}
+
+/* ── Alarm card ─────────────────────────────────────────────────── */
+
+.alm-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: background 0.12s;
+}
+.alm-card:hover { background: rgba(255,255,255,0.05); }
+.alm-card-error   { border-left: 3px solid #ef4444; }
+.alm-card-warning { border-left: 3px solid #f59e0b; }
+.alm-card-info    { border-left: 3px solid #3b82f6; }
+
+.alm-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.alm-card-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.alm-card-info { flex: 1; min-width: 0; }
+
+.alm-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d8e4f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alm-card-ts {
+  font-size: 11px;
+  color: #3a4e64;
+  margin-top: 2px;
+}
+
+.alm-badge-sev {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.alm-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.alm-meta-chip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #7a8fa8;
+}
+.alm-chip-warn { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); color: #fbbf24; }
+
+.alm-card-log {
+  margin-top: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: "SF Mono","Fira Code","Courier New",monospace;
+  font-size: 10.5px;
+  color: #f87171;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.alm-log-box {
+  margin-top: 10px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 7px;
+  padding: 8px 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  position: relative;
+}
+
+.alm-log-pre {
+  font-family: "SF Mono","Fira Code","Courier New",monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+.alm-copy-btn {
+  float: right;
+  margin-left: 8px;
+  margin-bottom: 4px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.55);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.1s, color 0.1s;
+}
+.alm-copy-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── Services grid ──────────────────────────────────────────────── */
+
+.alm-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.alm-svc-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.alm-svc-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.alm-svc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.alm-dot-ok   { background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,0.5); }
+.alm-dot-warn { background: #f59e0b; box-shadow: 0 0 4px rgba(245,158,11,0.4); }
+.alm-dot-err  { background: #ef4444; box-shadow: 0 0 4px rgba(239,68,68,0.4); }
+
+.alm-svc-ch    { font-size: 12.5px; font-weight: 600; color: #c8d4e3; }
+.alm-svc-state { font-size: 11px; color: #4b6080; margin-left: auto; }
+.alm-svc-restarts { font-size: 10.5px; color: #f59e0b; margin-top: 4px; padding-left: 14px; }
+
+/* ── All clear ──────────────────────────────────────────────────── */
+
+.alm-all-clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 0;
+  color: #4ade80;
+  font-size: 13px;
+}
+.alm-clear-icon { font-size: 28px; opacity: 0.7; }
+
+.alm-empty {
+  color: #3a4e64;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 13px;
+}

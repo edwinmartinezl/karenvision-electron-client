@@ -1,0 +1,48 @@
+{
+  "name": "karenvision-electron-client",
+  "version": "1.0.0",
+  "description": "Cliente de escritorio oficial y de referencia para KarenVision NVR",
+  "main": "main.js",
+  "author": {
+    "name": "KarenVision",
+    "email": "soporte@karenvision.com"
+  },
+  "homepage": "https://nvr.karenvision.com",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "start:linux": "env -u ELECTRON_RUN_AS_NODE electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:deb": "electron-builder --linux deb",
+    "dist:win": "electron-builder --windows nsis"
+  },
+  "dependencies": {
+    "animejs": "^3.2.1",
+    "mpegts.js": "^1.8.0"
+  },
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.karenvision.client",
+    "productName": "KarenVision",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "category": "Video"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="
+default-src 'self';
+script-src 'self' 'unsafe-inline';
+style-src 'self' 'unsafe-inline';
+img-src 'self' data:;
+object-src 'none';
+base-uri 'self';
+">
+<title>KarenVision Splash</title>
+<style>
+  :root {
+    --bg: #222a3a;
+    --fg: #ffffff;
+    --muted: rgba(255, 255, 255, 0.78);
+    --line: rgba(255, 255, 255, 0.22);
+    --line-accent: rgba(116, 198, 255, 0.42);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  html {
+    background: transparent;
+    border-radius: 22px;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--fg);
+    user-select: none;
+    border-radius: 22px;
+    clip-path: inset(0 round 22px);
+    background: var(--bg);
+  }
+
+  .splash {
+    position: relative;
+    width: min(860px, calc(100vw - 28px));
+    height: min(560px, calc(100vh - 28px));
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.035), transparent 48%),
+      radial-gradient(circle at 85% 18%, rgba(116, 198, 255, 0.08), transparent 42%),
+      rgba(255,255,255,0.01);
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30);
+    overflow: hidden;
+  }
+
+  .line {
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    transform: translateX(-50%);
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, var(--line), transparent);
+  }
+
+  .line.top {
+    top: 165px;
+  }
+
+  .line.bottom {
+    bottom: 170px;
+    background: linear-gradient(90deg, transparent, var(--line-accent), transparent);
+  }
+
+  .content {
+    text-align: center;
+    transform: scale(0.985);
+    opacity: 0;
+  }
+
+  .logo {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .slogan {
+    margin: 14px 0 0 0;
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  .pulse {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04);
+    opacity: 0;
+    transform: scale(0.92);
+    pointer-events: none;
+  }
+
+  .glow {
+    position: absolute;
+    inset: 22% 14%;
+    border-radius: 28px;
+    background: radial-gradient(circle at center, rgba(116, 198, 255, 0.10), transparent 65%);
+    opacity: 0;
+    pointer-events: none;
+    filter: blur(14px);
+  }
+</style>
+</head>
+<body>
+  <!-- Archivo: external_clients/karenvision-electron-client/renderer/splash.html -->
+  <!-- Pantalla de bienvenida (splash) mostrada al iniciar Electron. -->
+  <section class="splash" aria-label="Pantalla de bienvenida KarenVision">
+    <div class="pulse" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="line top" aria-hidden="true"></div>
+    <div class="line bottom" aria-hidden="true"></div>
+    <div class="content">
+      <h1 class="logo">KarenVision</h1>
+      <p class="slogan">The Flexible AI Video Infrastructure</p>
+    </div>
+  </section>
+
+  <script>
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    async function ensureAnime() {
+      if (window.anime) return;
+      try {
+        await loadScript("../node_modules/animejs/lib/anime.min.js");
+      } catch (_err) {
+        // Fallback offline/local para no romper el splash si animejs no está instalado.
+      }
+      if (!window.anime) {
+        await loadScript("./vendor/anime.min.js");
+      }
+    }
+
+    function startIntro() {
+      if (!window.anime || window.__kvSplashStarted) {
+        return;
+      }
+      window.__kvSplashStarted = true;
+      let introCompleteNotified = false;
+
+      function notifyIntroComplete() {
+        if (introCompleteNotified) {
+          return;
+        }
+        introCompleteNotified = true;
+        window.splashLifecycle?.introComplete?.();
+      }
+
+      const timeline = anime.timeline({
+        easing: "easeOutQuad",
+        duration: 700,
+        complete: notifyIntroComplete
+      });
+
+      timeline
+        .add({
+          targets: ".pulse",
+          opacity: [0, 1],
+          scale: [0.92, 1.04],
+          duration: 1000,
+          easing: "easeOutSine"
+        })
+        .add({
+          targets: ".pulse",
+          opacity: [1, 0.22],
+          scale: [1.04, 1.10],
+          duration: 1500,
+          easing: "easeOutQuad"
+        }, "-=420")
+        .add({
+          targets: ".glow",
+          opacity: [0, 1],
+          duration: 900,
+          easing: "easeOutCubic"
+        }, "-=1750")
+        .add({
+          targets: [".line.top", ".line.bottom"],
+          width: ["0px", "620px"],
+          opacity: [0, 1],
+          delay: anime.stagger(110),
+          duration: 760,
+          easing: "easeOutCubic"
+        }, "-=1650")
+        .add({
+          targets: ".content",
+          opacity: [0, 1],
+          scale: [0.985, 1],
+          duration: 760,
+          easing: "easeOutCubic"
+        }, "-=1580")
+        .add({
+          targets: ".slogan",
+          opacity: [0, 1],
+          translateY: [4, 0],
+          duration: 620,
+          easing: "easeOutQuad"
+        }, "-=950")
+        .add({
+          targets: [".line.top", ".line.bottom", ".glow"],
+          opacity: [1, 0.72],
+          duration: 1000,
+          easing: "linear"
+        }, "-=220");
+
+      anime({
+        targets: ".pulse",
+        scale: [1.10, 1.15],
+        opacity: [0.22, 0.09],
+        duration: 2400,
+        delay: 1900,
+        direction: "alternate",
+        loop: true,
+        easing: "easeInOutSine"
+      });
+
+      anime({
+        targets: ".glow",
+        opacity: [0.90, 0.35],
+        duration: 2600,
+        delay: 1600,
+        direction: "alternate",
+        loop: true,
+        easing: "easeInOutSine"
+      });
+
+      // Fallback para implementaciones parciales (o si falla callback de timeline).
+      setTimeout(notifyIntroComplete, 4300);
+    }
+
+    async function bootSplash() {
+      await ensureAnime();
+      startIntro();
+    }
+
+    if (document.readyState === "complete") {
+      bootSplash();
+    } else {
+      window.addEventListener("load", bootSplash, { once: true });
+    }
+  </script>
+</body>
+</html>

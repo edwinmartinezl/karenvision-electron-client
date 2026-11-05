@@ -1,0 +1,139 @@
+.locale-panel {
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+
+.locale-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.locale-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.locale-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.locale-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+.locale-cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.locale-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 148px;
+  padding: 24px 16px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.65);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.locale-card:hover {
+  border-color: rgba(116,198,255,0.35);
+  background: rgba(116,198,255,0.06);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.locale-card.active {
+  border-color: rgba(116,198,255,0.55);
+  background: rgba(116,198,255,0.1);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(116,198,255,0.2) inset;
+}
+
+.locale-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.locale-flag {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.locale-card-label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.locale-card-code {
+  font-size: 11px;
+  font-family: monospace;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.locale-check {
+  width: 16px;
+  height: 16px;
+  color: #74c6ff;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.locale-card.active .locale-check {
+  opacity: 1;
+}
+
+.locale-status {
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  max-width: 360px;
+}
+
+.locale-status-info {
+  color: rgba(255,255,255,0.55);
+  border-color: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.locale-status-ok {
+  color: #bff7e5;
+  border-color: rgba(66,215,168,0.28);
+  background: rgba(66,215,168,0.05);
+}
+
+.locale-status-error {
+  color: #ffc1c1;
+  border-color: rgba(255,93,93,0.28);
+  background: rgba(255,93,93,0.05);
+}

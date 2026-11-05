@@ -1,0 +1,149 @@
+.kv-dashboard-host {
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.kv-dashboard-host::-webkit-scrollbar {
+  display: none;
+}
+
+.status-pill.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 600;
+  padding: 7px 12px;
+}
+
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  opacity: 0.7;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+}
+
+.breadcrumb-item:hover {
+  opacity: 1;
+}
+
+.breadcrumb-active {
+  opacity: 1;
+  font-weight: 600;
+  cursor: default;
+}
+
+.breadcrumb-separator {
+  opacity: 0.4;
+}
+
+.viewer-pane {
+  grid-row: 1;
+  grid-column: 1;
+  min-height: 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  padding: 20px;
+  align-content: start;
+}
+
+.module-card {
+  background: #1a1f2b;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.module-card:focus-visible {
+  outline: 2px solid rgba(116, 198, 255, 0.5);
+  outline-offset: 2px;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+
+.module-card-toprow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.module-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.module-alert-badge {
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+.module-alert-badge.hidden { display: none; }
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.module-content {
+  display: grid;
+  gap: 6px;
+}
+
+.module-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.module-description {
+  font-size: 12px;
+  opacity: 0.65;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .dashboard-grid {
+    gap: 16px;
+    padding: 18px;
+    grid-template-columns: 1fr;
+  }
+}

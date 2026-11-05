@@ -1,0 +1,402 @@
+.view-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 20px 12px;
+  box-sizing: border-box;
+}
+
+/* When used as the full-screen view pane, bypass the height:100% chain
+   by anchoring absolutely to .screen-stage (position:relative).
+   Specificity .viewer-pane.active (0,2,0) beats .screen.active (0,2,0) — same,
+   so use 3 classes to win over .screen.active's display:block. */
+.view-root.viewer-pane.active {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.group-title {
+  position: relative;
+  padding-left: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.group-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 22px;
+  width: 3px;
+  background: #9c27e8;
+  border-radius: 2px;
+}
+
+.group-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-action-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 20px;
+  opacity: 0.9;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.group-action-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.group-action-duplicate {
+  opacity: 0.9;
+}
+
+.view-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+}
+
+.layout-icon {
+  display: grid;
+  gap: 2px;
+  width: 18px;
+  height: 18px;
+}
+
+.layout-icon.layout-1x1 {
+  grid-template-columns: 1fr;
+}
+
+.layout-icon.layout-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.layout-icon.layout-3x3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.layout-icon.layout-4x4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.layout-icon-cell {
+  background: currentColor;
+  border-radius: 1px;
+  opacity: 0.95;
+}
+
+.group-grid {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.group-grid-inner {
+  /* Width/height stamped by JS (ResizeObserver) to preserve camera 16:9 ratio */
+  display: grid;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.group-grid-inner.layout-1x1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.group-grid-inner.layout-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.group-grid-inner.layout-3x3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.group-grid-inner.layout-4x4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.camera-cell {
+  position: relative;
+  background: transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.camera-cell.is-animating {
+  transition:
+    transform 160ms cubic-bezier(.2,.9,.2,1),
+    opacity 120ms cubic-bezier(.2,.9,.2,1);
+}
+
+.camera-cell.is-placeholder {
+  background: transparent;
+  border: none;
+}
+
+.camera-cell.is-placeholder .camera-preview {
+  background: transparent;
+}
+
+.camera-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.camera-corner-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+}
+
+.corner-blue .camera-corner-indicator {
+  background: #2962ff;
+}
+
+.corner-red .camera-corner-indicator {
+  background: #ff1744;
+}
+
+.group-grid-inner.layout-2x2 > :nth-child(2) .camera-corner-indicator,
+.group-grid-inner.layout-2x2 > :nth-child(4) .camera-corner-indicator {
+  left: auto;
+  right: 0;
+}
+
+.camera-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 4px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.camera-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.camera-dot.online {
+  background: #00c853;
+}
+
+.camera-dot.offline {
+  background: #ff1744;
+}
+
+.camera-channel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.camera-name {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.85;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* ── Live stream video ── */
+.camera-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  background: #000;
+  z-index: 0;
+  display: block;
+}
+
+.camera-stream-status {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 3px 8px;
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+}
+
+.camera-stream-status[data-stream-state="streaming"] {
+  display: none;
+}
+
+.stream-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: #ffc107;
+}
+
+.stream-status-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* NVR-style live timestamp — top-left of each camera cell */
+.camera-timestamp {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  z-index: 5;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "Courier New", Courier, monospace;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 0 4px rgba(0,0,0,0.9),
+    1px 1px 2px rgba(0,0,0,0.8);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Corner indicator and overlay must float above the video */
+.camera-corner-indicator { z-index: 2; }
+.camera-overlay           { z-index: 4; }
+
+/* ── Reconnecting overlay ── */
+.camera-reconnecting-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(5, 10, 22, 0.90);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-reconnecting-overlay[hidden] {
+  display: none;
+}
+
+.camera-reconnecting-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.camera-reconnecting-logo {
+  width: 90px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(116, 198, 255, 0.35));
+}
+
+.camera-reconnecting-brand {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.camera-reconnecting-msg {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.06em;
+}
+
+.r-dot {
+  display: inline-block;
+  opacity: 0;
+  animation: kv-dot-blink 1.4s ease-in-out infinite;
+}
+.r-dot:nth-child(2) { animation-delay: 0.2s; }
+.r-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes kv-dot-blink {
+  0%, 80%, 100% { opacity: 0; }
+  40%           { opacity: 1; }
+}
+
+@media (max-width: 820px) {
+  .view-root {
+    padding: 12px;
+  }
+
+  .group-grid-inner {
+    gap: 6px;
+  }
+
+  .group-grid-inner.layout-3x3,
+  .group-grid-inner.layout-4x4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+  }
+}

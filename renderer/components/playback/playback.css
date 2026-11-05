@@ -1,0 +1,616 @@
+/* ── Playback Module ──────────────────────────────────────────── */
+
+.pb-root {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100%;
+  min-height: 0;
+  background: #080c17;
+  overflow: hidden;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+
+.pb-sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.012);
+  overflow: hidden;
+}
+
+.pb-sidebar-header {
+  padding: 18px 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.pb-sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 16px;
+}
+
+.pb-day-info {
+  padding: 14px 14px 10px;
+}
+
+.pb-day-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.pb-day-stats {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── Rango In/Out + exportación (I / O / Esc) ───────────────────── */
+
+.pb-export-panel {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 16px;
+  margin: 0 14px 10px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  background: rgba(255,196,60,0.05);
+}
+.pb-export-panel.visible { display: flex; }
+
+.pb-export-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,196,60,0.75);
+  margin-top: 6px;
+}
+.pb-export-title:first-child { margin-top: 0; }
+
+.pb-export-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pb-export-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+}
+
+.pb-export-value {
+  font-size: 12px;
+  font-family: "Courier New", monospace;
+  color: #fff;
+  text-align: right;
+}
+
+.pb-export-duration {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  color: #fff;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.pb-export-size {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  min-height: 14px;
+}
+
+.pb-export-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pb-export-btn {
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255,196,60,0.55), rgba(255,150,60,0.35));
+  border: 1px solid rgba(255,196,60,0.6);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+}
+.pb-export-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(255,196,60,0.75), rgba(255,150,60,0.55));
+}
+.pb-export-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Progreso de exportación en curso — oculto por defecto (CSP bloquea
+   style="display:none" inline en el HTML, así que el default vive acá y
+   el JS lo prende/apaga con element.style.display en tiempo de ejecución,
+   que sí está permitido). */
+.pb-export-progress {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+.pb-export-progress-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  font-family: "Courier New", monospace;
+}
+.pb-export-progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.pb-export-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(255,196,60,0.9), rgba(255,150,60,0.9));
+  transition: width 0.3s ease;
+}
+.pb-export-cancel-btn {
+  width: 100%;
+  padding: 7px 0;
+  border-radius: 8px;
+  background: rgba(248,113,113,0.12);
+  border: 1px solid rgba(248,113,113,0.4);
+  color: #f87171;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pb-export-cancel-btn:hover { background: rgba(248,113,113,0.22); }
+
+/* Resultado final — ventana emergente centrada sobre todo el módulo (no
+   el panel angosto de la barra lateral, donde una ruta larga se cortaba).
+   display:none por defecto acá, no como atributo inline (bloqueado por
+   la CSP del cliente). */
+.pb-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.pb-modal-backdrop.visible { display: flex; }
+
+.pb-modal-box {
+  width: 420px;
+  max-width: calc(100vw - 48px);
+  background: #161b28;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.pb-modal-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+.pb-modal-backdrop.success .pb-modal-icon { background: rgba(74,222,128,0.15); color: #4ade80; }
+.pb-modal-backdrop.error   .pb-modal-icon { background: rgba(248,113,113,0.15); color: #f87171; }
+
+.pb-modal-message {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.pb-modal-close-btn {
+  margin-top: 4px;
+  padding: 8px 28px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pb-modal-close-btn:hover { background: rgba(255,255,255,0.14); }
+
+/* ── Calendario ──────────────────────────────────────────────── */
+
+.pb-cal { width: 100%; }
+
+.pb-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.pb-cal-month {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pb-cal-nav {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  border-radius: 5px;
+  width: 24px; height: 24px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.pb-cal-nav:hover { color: #fff; border-color: rgba(255,255,255,0.22); }
+
+.pb-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.pb-cal-dow {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+  padding: 3px 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pb-cal-day {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.28);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  transition: all 0.1s;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: default;
+}
+
+.pb-cal-day.has-rec {
+  color: rgba(255,255,255,0.82);
+  cursor: pointer;
+}
+.pb-cal-day.has-rec:hover {
+  background: rgba(120,53,165,0.18);
+  border-color: rgba(120,53,165,0.35);
+}
+.pb-cal-day.has-rec::after {
+  content: '';
+  position: absolute;
+  bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #54bddf;
+}
+.pb-cal-day.selected {
+  background: rgba(120,53,165,0.30);
+  border-color: rgba(120,53,165,0.65);
+  color: #fff;
+}
+.pb-cal-day.today { border-color: rgba(255,255,255,0.18); }
+.pb-cal-day.empty { cursor: default; }
+
+/* ── Panel derecho ───────────────────────────────────────────── */
+
+.pb-player-panel {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Video ───────────────────────────────────────────────────── */
+
+.pb-video-wrap {
+  position: relative;
+  min-height: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pb-video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #000;
+  display: none;
+}
+.pb-video.visible { display: block; }
+
+.pb-empty-state,
+.pb-nosignal {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.25);
+}
+.pb-empty-state.visible,
+.pb-nosignal.visible {
+  display: flex;
+}
+
+.pb-empty-icon, .pb-nosignal-icon { font-size: 42px; opacity: 0.3; }
+.pb-empty-text, .pb-nosignal-text {
+  font-size: 13px; text-align: center; line-height: 1.5;
+}
+
+.pb-play-start {
+  margin-top: 16px;
+  padding: 10px 28px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(120,53,165,0.5), rgba(84,189,223,0.3));
+  border: 1px solid rgba(120,53,165,0.55);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.18s;
+}
+.pb-play-start:hover {
+  background: linear-gradient(180deg, rgba(120,53,165,0.75), rgba(84,189,223,0.5));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(120,53,165,0.35);
+}
+.pb-play-start:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.pb-nosignal { background: rgba(0,0,0,0.6); }
+.pb-nosignal-time {
+  font-family: monospace;
+  font-size: 18px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+}
+
+/* ── Timeline 24h ─────────────────────────────────────────────── */
+
+.pb-timeline-section {
+  padding: 10px 16px 6px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.015);
+  flex-shrink: 0;
+}
+
+.pb-tl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pb-tl-now {
+  font-family: "Courier New", monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.pb-tl-range {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  font-family: monospace;
+}
+
+/* Contenedor de la barra + tooltip */
+.pb-tl-bar-wrap {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+/* Fondo violeta = gaps (sin grabación) */
+.pb-tl-bar {
+  position: relative;
+  height: 44px;
+  background: #4a1f7a;   /* violeta = gaps */
+  border-radius: 6px;
+  overflow: visible;
+  cursor: crosshair;
+  user-select: none;
+  border: 1px solid rgba(120,53,165,0.4);
+}
+
+/* Feedback visual del modo Ctrl+arrastrar (selección de rango In/Out) */
+.pb-tl-bar.pb-tl-ctrl-hover     { cursor: grab; }
+.pb-tl-bar.pb-tl-select-dragging { cursor: grabbing; }
+
+/* Segmentos grabados en cian/azul */
+.pb-tl-recorded {
+  position: absolute;
+  top: 0; height: 100%;
+  background: #54bddf;   /* cian = grabado */
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Cursor/playhead */
+.pb-tl-cursor {
+  position: absolute;
+  top: -4px; bottom: -4px;
+  width: 2px;
+  background: #fff;
+  border-radius: 1px;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+  z-index: 4;
+}
+
+.pb-tl-cursor::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+
+/* Selección In/Out (marcada con teclas I / O, Esc para limpiar) */
+.pb-tl-selection {
+  position: absolute;
+  top: 0; height: 100%;
+  background: rgba(255, 196, 60, 0.28);
+  border-left: 1px solid rgba(255, 196, 60, 0.85);
+  border-right: 1px solid rgba(255, 196, 60, 0.85);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pb-tl-io-marker {
+  position: absolute;
+  top: -6px; bottom: -6px;
+  width: 2px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pb-tl-io-in    { background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.6); }
+.pb-tl-io-out   { background: #f87171; box-shadow: 0 0 6px rgba(248,113,113,0.6); }
+
+.pb-tl-io-marker::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent;
+}
+.pb-tl-io-in::before  { border-top-color: #4ade80; }
+.pb-tl-io-out::before { border-top-color: #f87171; }
+
+/* Tooltip flotante */
+.pb-tl-tooltip {
+  position: absolute;
+  top: -26px;
+  background: rgba(10,14,28,0.92);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #fff;
+  pointer-events: none;
+  white-space: nowrap;
+  display: none;
+  transform: translateX(-50%);
+}
+
+.pb-tl-bar-wrap:hover .pb-tl-tooltip { display: block; }
+
+/* Marcas de hora — posicionadas dinámicamente por JS */
+.pb-tl-hours {
+  position: relative;
+  height: 16px;
+  margin-top: 3px;
+  user-select: none;
+}
+.pb-tl-hours span {
+  position: absolute;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.28);
+  font-family: monospace;
+  white-space: nowrap;
+}
+.pb-tl-bar-wrap {
+  user-select: none;
+}
+
+/* ── Barra de controles ────────────────────────────────────────── */
+
+.pb-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.25);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.pb-ctrl-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 2px;
+}
+
+.pb-ctrl-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.75);
+  border-radius: 7px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.13s;
+  white-space: nowrap;
+}
+.pb-ctrl-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.pb-ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.pb-ctrl-btn.active {
+  background: rgba(84,189,223,0.2);
+  border-color: rgba(84,189,223,0.5);
+  color: #74c6ff;
+}
+
+.pb-ctrl-play {
+  background: linear-gradient(180deg, rgba(120,53,165,0.55), rgba(84,189,223,0.3));
+  border-color: rgba(120,53,165,0.6);
+  color: #fff;
+  padding: 5px 16px;
+  /* Ancho fijo — "▶ Reproducir" y "⏸ Pausar" tienen largos distintos, y sin
+     esto el toggle cambiaba el ancho del botón, lo que podía reflowear
+     .pb-controls (flex-wrap) y encoger la fila del video (grid-template-rows
+     1fr auto auto en .pb-player-panel). */
+  min-width: 118px;
+  text-align: center;
+}
+.pb-ctrl-play:hover {
+  background: linear-gradient(180deg, rgba(120,53,165,0.8), rgba(84,189,223,0.5));
+}
+
+.pb-ctrl-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 2px;
+}
+
+.pb-ctrl-spacer { flex: 1; }

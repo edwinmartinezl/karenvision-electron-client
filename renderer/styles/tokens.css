@@ -1,0 +1,20 @@
+:root {
+  --bg-0: #222a3a;
+  --bg-1: #263247;
+  --bg-2: #2b3b55;
+  --panel: rgba(255, 255, 255, 0.022);
+  --panel-strong: rgba(255, 255, 255, 0.03);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-soft: rgba(255, 255, 255, 0.08);
+  --line-accent: rgba(116, 198, 255, 0.32);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.76);
+  --accent: #74c6ff;
+  --accent-2: #74c6ff;
+  --brand: #9c27e8;
+  --brand-rgb: 156, 39, 232;
+  --danger: #ff7b7b;
+  --warn: #ffd166;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.30);
+  --shell-pad: 18px;
+}
